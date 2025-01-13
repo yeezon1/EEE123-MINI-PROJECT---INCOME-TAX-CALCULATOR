@@ -1,6 +1,6 @@
 //Programmer: OOI YEEZON
-//USM Email: yeezon@student.usm.my
-//GitHub Username: Yeezon1
+//USM Email: Yeezon@student.usm.my
+//GitHub Username: yeezon1
 //Matric No.: 23301291
 
 //Selection expenses for individual
@@ -100,7 +100,6 @@ int main()
         selectedCategories.insert(CodeOfChoice);
 
         // Display amount can be deducted
-
         if (CodeOfChoice == 6 || CodeOfChoice == 7)
         {
            cout << "Deduct RM " << deductible << "\n"; 
