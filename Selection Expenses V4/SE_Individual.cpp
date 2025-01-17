@@ -71,20 +71,20 @@ void selectionexpenses()
     int dexpenses[23] = {0}; // Initialize all deductible expenses to 0
 
     // Display the allowed categories for expenses
-    cout << "\n================================================================================================\n";
+    cout << "\n=============================================================================================\n";
     cout << "                               <Part 3. Relief Selection>\n";
-    cout << "================================================================================================\n";
+    cout << "==============================================================================================\n";
     cout << "The following list is the allowed categories for expenses:\n";
-    cout << "+----+-------------------------------------------------------------------+---------------------+\n";
-    cout << "| No | Category                                                          | Maximum Deduction   |\n";
-    cout << "+----+-------------------------------------------------------------------+---------------------+\n";
+    cout << "+----+-----------------------------------------------------------------+---------------------+\n";
+    cout << "| No | Category                                                        | Maximum Deduction   |\n";
+    cout << "+----+-----------------------------------------------------------------+---------------------+\n";
     for (int i = 0; i < 23; i++)
     {
-        cout << "| " << setw(2) << i + 1 << " | " << left << setw(65) << setfill(' ')
+        cout << "| " << setw(2) << i + 1 << " | " << left << setw(63) << setfill(' ')
              << categories[i] // Use the array for category descriptions
-             << " | RM " << setw(16) << right << MaxDeductions[i] << " |\n";
+             << " | RM " << setw(15) << right << MaxDeductions[i] << " |\n";
     }
-    cout << "+----+-------------------------------------------------------------------+---------------------+\n";
+    cout << "+----+-----------------------------------------------------------------+---------------------+\n";
 
     // Ask for marital status
     char maritalstatus;
@@ -196,47 +196,41 @@ void AskQuestionForSingle(int dexpenses[])
 // Function to handle questions for married individuals
 void AskQuestionForMarried(int dexpenses[])
 {
+    // Ask if the user has any children
+    bool hasChildren = askQuestion("Do you have any children?");
+
     for (int i = 0; i < 23; i++)
     {
-        // Ask if the user has any children
-        bool hasChildren = askQuestion("Do you have any children?");
-        
-        // Categories to ask if the user has children
-        int childCategories[] = {7, 11, 15, 16, 17}; // 8, 12, 16, 17, 18 (adjusted for 0-based index)
-        
-        for (int i = 0; i < 23; i++)
+        // Skip child-related categories if the user has no children
+        if (!hasChildren && (i == 7 || i == 11 || i == 15 || i == 16 || i == 17))
         {
-            // Skip child-related categories if the user has no children
-            if (!hasChildren && (i == 7 || i == 11 || i == 15 || i == 16 || i == 17))
+            continue; // Skip these categories
+        }
+
+        string category = categories[i]; // Get category description from the array
+
+        if (askQuestion("Do you have expenses for " + category + "?"))
+        {
+            if (i == 15 || i == 16) // Categories depending on the number of children
             {
-                continue; // Skip these categories
+                int numChildren = getNumberInput("Enter the number of " + category + ": ");
+                dexpenses[i] = numChildren * 2000;
             }
-
-            string category = categories[i]; // Get category description from the array
-
-            if (askQuestion("Do you have expenses for " + category + "?"))
+            else if (i == 17) // Categories depending on the number of children
             {
-                if (i == 15 || i == 16) // Categories depending on the number of children
-                {
-                    int numChildren = getNumberInput("Enter the number of " + category + ": ");
-                    dexpenses[i] = numChildren * 2000;
-                }
-                else if (i == 17) // Categories depending on the number of children
-                {
-                    int numChildren = getNumberInput("Enter the number of " + category + ": ");
-                    dexpenses[i] = numChildren * 6000;
-                }
-                else
-                {
-                    int expenses = getNumberInput("Please enter your expenses for " + category + " (RM): ");
-                    dexpenses[i] = min(expenses, MaxDeductions[i]);
-                }
-                cout << "Deductible amount: RM " << dexpenses[i] << ".\n";
+                int numChildren = getNumberInput("Enter the number of " + category + ": ");
+                dexpenses[i] = numChildren * 6000;
             }
             else
             {
-                cout << "You do not have expenses for " << category << ".\n";
+                int expenses = getNumberInput("Please enter your expenses for " + category + " (RM): ");
+                dexpenses[i] = min(expenses, MaxDeductions[i]);
             }
+            cout << "Deductible amount: RM " << dexpenses[i] << ".\n";
+        }
+        else
+        {
+            cout << "You do not have expenses for " << category << ".\n";
         }
     }
 }
