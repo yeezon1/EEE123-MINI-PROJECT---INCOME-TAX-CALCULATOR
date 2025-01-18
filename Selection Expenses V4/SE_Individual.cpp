@@ -71,7 +71,7 @@ void selectionexpenses()
     int dexpenses[23] = {0}; // Initialize all deductible expenses to 0
 
     // Display the allowed categories for expenses
-    cout << "\n===============================================================================================\n";
+    cout << "\n================================================================================================\n";
     cout << "                                 <Part 3. Relief Selection>\n";
     cout << "================================================================================================\n";
     cout << "The following list is the allowed categories for expenses:\n";
@@ -156,12 +156,12 @@ int getNumberInput(const string& prompt)
         if (cin.fail() || num < 0)
         {
             cin.clear();
-            cin.ignore(1000, '\n');
+            cin.ignore(256, '\n');
             cout << "Invalid input!!! Please enter again.\n";
         }
         else
         {
-            cin.ignore(1000, '\n'); // Clear the input buffer
+            cin.ignore(256, '\n'); // Clear the input buffer
             return num;
         }
     }
@@ -249,7 +249,7 @@ void displayDeductibleTable(int dexpenses[])
     // Calculate and display the total deductible
     int total_deductible = calculateTotalDeductible(dexpenses, 23);
 
-    cout << "\n===============================================================================================\n";
+    cout << "\n================================================================================================\n";
     cout << "                                  <Deductible Amounts>\n";
     cout << "================================================================================================\n";
     cout << "+----+-------------------------------------------------------------------+---------------------+\n";
@@ -265,7 +265,8 @@ void displayDeductibleTable(int dexpenses[])
         }
     }
     cout << "+----+-------------------------------------------------------------------+---------------------+\n";
-    cout << "      Total deductible amount for all categories                           RM" << total_deductible << "\n";
+    cout << "       Total deductible amount for all categories                          RM ";
+    cout << setw(16) << right << total_deductible << "\n";
     cout << "+----+-------------------------------------------------------------------+---------------------+\n";
 }
 
